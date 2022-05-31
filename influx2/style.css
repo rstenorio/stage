@@ -1,0 +1,110 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+html {
+  background: rgb(212, 210, 210);
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  background: rgb(53, 54, 54);
+  width: 900px;
+  height: 720px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 20px;
+}
+
+h2 {
+  max-width: 100%;
+  text-align: center;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.form-select {
+  margin: 5px;
+  width: 320px;
+  height: 35px;
+}
+
+.tab-range {
+  display: flex;
+  margin: 0;
+}
+
+.chart-container {
+  max-width: 900px;
+}
+
+.card-header{
+  background-color: rgba(53, 54, 54, 1);
+}
+
+/*
+.form-control label {
+  display: none;
+}
+
+.error-message {
+  margin-top: 5px;
+  color: #faa;
+}
+
+.form-input::placeholder {
+  color: #c9c9c9;
+}
+
+.form-input:disabled {
+  background-color: #ddd;
+}
+*/
+
+.media-container h1 {
+  color: #068b58;
+  font-weight: 700;
+  font-size: 50px;
+}
+
+.media-container h2 {
+  font-size: 36px;
+  color: #068b58;
+}
+
+.btn-container {
+  display: flex;
+  justify-content:space-around;
+  margin: 5px;
+}
+
+.btn {
+  width: 130px;
+  height: 35px;
+  background-color: #068b58;
+  color: rgb(24, 23, 23);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.btn-left {
+  margin-right: 10px;
+}
+
+.btn-right {
+  margin-left: 10px;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Influx</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <section id="form-section" class="form-container">
+        <!--div class="card-form"-->
+          <form class="ricerca-container">
+            <div class="input-container">
+              <select
+                name="measure"
+                id="measure"
+                class="form-select"
+                aria-label="Default select example"
+              >
+                <option selected>Ricerca per misura...</option>
+                <option value="co2">co2</option>
+                <option value="humidity">humidity</option>
+                <option value="power">power</option>
+              </select>
+
+              <select
+                name="sid"
+                id="sid"
+                class="form-select"
+                aria-label="Default select example"
+              >
+                <option selected>Ricerca per luogho...</option>
+                <option value="bagno" selected>bagno</option>
+                <option value="commerciale">commerciale</option>
+                <option value="direzione">direzione</option>
+                <option value="uff_tecnico">uff_tecnico</option>
+              </select>
+            </div>
+
+            <div class="btn-container">
+              <input
+                type="button"
+                class="btn btn-left"
+                name="btnCercare"
+                onclick="getInflux()"
+                value="Aggiorna"
+              />
+
+              <input
+                type="button"
+                class="btn btn-right"
+                name="btnClear"
+                onclick="clear()"
+                value="Pulire"
+              />
+            </div>
+            
+            <div class="media">
+              <h2>Media</h2>
+              <p>...</p>
+            </div>
+          </form>
+        <!--/div-->
+        
+        <!--div class="card chart-container m-5"-->
+        <div class="card chart-container">
+          <div class="card-header">
+            <h2>Influx Grafici</h2>
+            <canvas id="myChart"></canvas>
+          </div>
+      </section>
+    </main>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

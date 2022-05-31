@@ -1,0 +1,142 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+html {
+  background-color: #000;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  background: rgb(53, 54, 54);
+  width: 1096px;
+  max-height: auto;
+  border-radius: 8px;
+}
+
+h2 {
+  max-width: 100%;
+  text-align: center;
+  font-size: 24px;
+  color: rgba(53, 54, 54, 0.8);
+}
+
+.form-container {
+    margin: 15px;
+    border: 1px solid blue;
+    /*
+    padding: 30px;
+
+    display: flex;
+    */
+}
+
+/*
+.card-form {
+    background-color: rgb(20, 20, 20);
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 8px;
+    border: 1px solid red;
+}
+*/
+
+.ricerca-container{
+    background-color: rgb(39, 37, 37);
+    width: 1000px;
+    height: 160px;
+    padding: 5px;
+    /*
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  padding: 20px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 1px solid yellow;
+    */
+}
+
+.form-select{
+    margin: 5px;
+    width: 320px;
+}
+
+
+.chart-container {
+  max-width: 900px;
+  /*
+    max-height: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    */
+}
+
+.form-select {
+  /*
+  margin-bottom: 10px;
+  height: 35px;
+*/
+}
+
+/*
+.form-control label {
+  display: none;
+}
+
+.error-message {
+  margin-top: 5px;
+  color: #faa;
+}
+
+.form-input::placeholder {
+  color: #c9c9c9;
+}
+
+.form-input:disabled {
+  background-color: #ddd;
+}
+
+*/
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 5px;
+}
+
+.btn {
+  width: 150px;
+  height: 50px;
+  background-color: #068b58;
+  color: rgb(24, 23, 23);
+  border: 0;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.btn-left {
+  margin-right: 10px;
+}
+
+.btn-right {
+  margin-left: 10px;
+}
+
+.media{
+
+}

@@ -1,0 +1,17 @@
+body{
+    padding: 0;
+}
+
+.main-container{
+    width: 600px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid red;
+
+}
+
+.input-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}

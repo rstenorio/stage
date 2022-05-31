@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="home.css">
+    <title>Document</title>
+
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="control-container">
+            
+            <div class="input-container">
+                <select
+                name="measure"
+                id="measure"
+                class="form-select"
+                aria-label="Default select example"
+              >
+                <option selected>Ricerca per misura...</option>
+                <option value="co2">co2</option>
+                <option value="humidity">humidity</option>
+                <option value="power">power</option>
+              </select>
+
+              <select
+                name="sid"
+                id="sid"
+                class="form-select"
+                aria-label="Default select example"
+              >
+                <option selected>Ricerca per luogho...</option>
+                <option value="bagno" selected>bagno</option>
+                <option value="commerciale">commerciale</option>
+                <option value="direzione">direzione</option>
+                <option value="uff_tecnico">uff_tecnico</option>
+              </select>
+            </div>
+
+            <div class="btn-container">
+                <input
+                type="button"
+                class="btn btn-left"
+                name="btnCercare"
+                onclick="getInflux()"
+                value="Aggiorna"
+              />
+
+              <input
+                type="button"
+                class="btn btn-right"
+                name="btnClear"
+                onclick="clear()"
+                value="Pulire"
+              />
+            </div>
+        
+        </div>
+
+        <div class="media-container">
+            <h1> -- MEDIA --</h1>
+            <h2>     600    </h2>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

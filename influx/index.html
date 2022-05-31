@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/csv.css" />
+    <title>Influx</title>
+  </head>
+  <body>
+    <div>
+      <input type="file" id="uploadfile" accept=".csv" />
+      <button id="uploadconfirm" type="submit">Upload Confirm</button>
+    </div>
+
+    <div>
+      <form class="form-table">
+        <table class="myTable">
+          <tr>
+            <!-- result,table,_start,_stop,_time,_value,_field
+                        ,_measurement,device,plant_key,sid-->
+            <th>start</th>
+            <th>stop</th>
+            <th>time</th>
+            <th>value</th>
+          </tr>
+          <tr>
+            <td>01</td>
+            <td>02</td>
+            <td>03</td>
+            <td>04</td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  </body>
+</html>
+
+<script>
+  const startData = [];
+  const stopData = [];
+  const timeData = [];
+  const valueData = [];
+
+  const uploadconfirm = document
+    .getElementById("uploadconfirm")
+    .addEventListener("click", () => {
+      Papa.parse(document.getElementById("uploadfile").files[0], {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          for (let i = 0; i < results.data.length; i++) {
+            //text.substring(1, 4);
+            startData.push(results.data[i]._start);
+            stopData.push(results.data[i]._stop);
+            timeData.push(results.data[i]._time);
+            valueData.push(results.data[i]._value);
+          }
+
+          console.log(startData);
+          console.log(stopData);
+          console.log(timeData);
+          console.log(valueData);
+        },
+      });
+    });
+</script>
