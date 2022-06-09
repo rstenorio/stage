@@ -1,0 +1,11 @@
+.btn-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-container a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

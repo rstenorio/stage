@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+    <title>Data Picker</title>
+  </head>
+  <body>
+    <h1>Data Picker</h1>
+    <div class="container mt-5 mb-5" style="width: 400px">
+      <div
+        id="reportrange"
+        style="
+          max-width: 200px;
+          background: #fff;
+          cursor: pointer;
+          padding: 5px 10px;
+          border: 1px solid #ccc;
+        "
+      >
+        <i class="fa fa-calendar"></i>&nbsp;
+        <span id="date"></span>
+        <i class="fa fa-caret-down"></i>
+      </div>
+    </div>
+
+    <hr />
+
+    <p>Start date: <b id="start"></b></p>
+    <p>End date: <b id="end"></b></p>
+
+    <!--
+        <script src="script.js"></script>
+        <script>
+            $("#reportrange").daterangepicker(
+                {
+                    opens: "center",
+                },
+                function (start, end, label) {
+                    $("#start").text(start.format("YYYY-MM-DD"));
+                    $("#end").text(end.format("YYYY-MM-DD"));
+                }
+                );
+            </script>
+        -->
+
+    <script>
+      $("#reportrange").daterangepicker(
+        {
+          startDate: moment().subtract(29, "days"),
+          endDate: moment(),
+          ranges: {
+            "1 Giorno":  [moment().subtract(1, "days")],
+            "1 Settimana":  [moment().subtract(7, "days"), moment()],
+            "1 Mese": [moment().subtract(30, "days"), moment()],
+          },
+        },
+        function (start, end) {
+          $("#start").text(start.format("DD-MMM-YYYY hh:mm:ss") + " - " + end.format("DD-MMM-YYYY hh:mm:ss"));
+        }
+      );
+    </script>
+    <!--
+-->
+  </body>
+</html>

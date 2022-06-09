@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Picker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="daterangepicker.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+  <body>
+    <h1>Data Picker</h1>
+  
+    <div class="container mt-5 mb-5" style="width: 460px;">
+        <input type="text" id="picker" class="form-control" value="05/08/2022 - 06/08/2022">
+        <p><br/></p>
+        <p>Start date: <b id="start">2022-05-08</b></p>
+        <p>End date: <b id="end">2022-06-08</b></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.css"></script>
+    <script>
+        $('#picker').daterangepicker({
+            opens:'left'
+        }, function (start, end, label) {
+            $('#start').text(start.format('YYYY-MM-DD'))
+            $('#end').text(end.format('YYYY-MM-DD'))
+        }
+        )
+    </script>
+</body>
+</html>
