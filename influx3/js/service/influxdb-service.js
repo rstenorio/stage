@@ -1,33 +1,40 @@
-let my_titolo = "";
 let my_measurement = [];
 let my_time = [];
 let my_value = [];
 let my_plant_key = [];
 let my_sid = [];
 
-const sid = ["bagno", "commerciale", "direzione", "uff_tecnico"];
-const measure = ["co2", "humidity", "temperature", "power"];
-
-var start = "";
-var end = "";
+let start = "";
+let end = "";
 
 async function caricaGrafico() {
-  const input_sid = measure[0] + "_" + sid[0];
+  start = sistData(localStorage.reservationtime).start;
+  end = sistData(localStorage.reservationtime).end;
 
-  const input_range = localStorage.reservationtime;
+  //prendere questi valore da .txt
+  const measure = ["co2", "humidity", "temperature", "power"];
+  const sid = ["bagno", "commerciale", "direzione", "uff_tecnico"];
 
-  start = `${input_range.substr(6, 4)}-${input_range.substr(3,2)}-${input_range.substr(0, 2)}T00:00:00Z`; //
-  end = `${input_range.substr(25, 4)}-${input_range.substr(22,2)}-${input_range.substr(19, 2)}T00:00:00Z`; //
+  for (let i = 0; i < sid.length; i++) {
+    const input_sid = measure[0].substring(0, 3) + "_" + sid[i];
 
-  const query = [
-    `from(bucket: "${localStorage.plant}")
-         |> range(start: ${start}, stop: ${end})
-         |> filter(fn: (r) => r._measurement == "${measure[0]}")
-         |> filter(fn: (r) => r.sid == "${input_sid}")
-         |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
-        ];
+    const query = [
+      `from(bucket: "${localStorage.plant}")
+      |> range(start: ${start}, stop: ${end})
+      |> filter(fn: (r) => r._measurement == "${measure[0]}")
+      |> filter(fn: (r) => r.sid == "${input_sid}")
+      |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
 
-  getInfluxData(query[0],input_sid);
+      `from(bucket: "${localStorage.plant}")
+      |> range(start: ${start}, stop: ${end})
+      |> filter(fn: (r) => r._measurement == "${measure[0]}")
+      |> filter(fn: (r) => r["sid"] == "co2_bagno" or r["sid"] == "co2_commerciale")
+      |> filter(fn: (r) => r.sid == "${input_sid}")
+      |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
+    ];
+    getInfluxData(query[0], input_sid);
+  }
+
   //getInfluxData(0);
 
   /*
@@ -44,42 +51,25 @@ async function caricaGrafico() {
 */
 }
 
-async function getInfluxData(myquery,input_sid) {
-//async function getInfluxData(value) {
-  /*
-  const input_plant = localStorage.plant;
-  const input_range = localStorage.reservationtime;
-  const input_select_timeframe = localStorage.timeframe;
-  
-  //  let start = input_range.substr(6, 4) + "-" + input_range.substr(3, 2) + "-" + input_range.substr(0, 2) + "T00:00:00Z";
-  //  let end = input_range.substr(25, 4) + "-" + input_range.substr(22, 2) + "-" + input_range.substr(19, 2) + "T00:00:00Z";
-  //20/06/2022 12:17 - 21/06/2022 12:17
-  
-  const input_range = localStorage.reservationtime;
-  
-  const input_measu = measure[value]; //document.querySelector("#measure").value;
-  const x = input_measu == "temperature" ? 4 : 3;
-  const input_sid = input_measu.substr(0, x) + "_" + sid[value]; //document.querySelector("#sid").value;
+const sistData = (value) => {
+  //21/06/2022 10:23 - 22/06/2022 10:23
+  const start = `${value.substr(6, 4)}-${value.substr(3, 2)}-${value.substr(
+    0,
+    2
+  )}T${value.substr(11, 5)}:00Z`;
+  const end = `${value.substr(25, 4)}-${value.substr(22, 2)}-${value.substr(
+    19,
+    2
+  )}T${value.substr(30, 5)}:00Z`;
 
-  //${input_range.substr(11, 5)}
-  //${input_range.substr(30, 5)}
+  return { start, end };
+};
 
-  let start = `${input_range.substr(6, 4)}-${input_range.substr(3,2)}-${input_range.substr(0, 2)}T00:00:00Z`;
-  let end = `${input_range.substr(25, 4)}-${input_range.substr(22,2)}-${input_range.substr(19, 2)}T00:00:00Z`;
-
-  const query = [
-    `from(bucket: "${localStorage.plant}")
-    |> range(start: ${start}, stop: ${end})
-    |> filter(fn: (r) => r._measurement == "${measure[value]}")
-    |> filter(fn: (r) => r.sid == "${input_sid}")
-    |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
-  ];
-  */
-  
-  const apiurl = "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
-  const auth = "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
-
-  my_titolo = input_sid;
+async function getInfluxData(myquery, input_sid) {
+  const apiurl =
+    "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
+  const auth =
+    "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
 
   await fetch(apiurl, {
     method: "POST",
@@ -90,9 +80,7 @@ async function getInfluxData(myquery,input_sid) {
     body: myquery,
   })
     .then((response) => {
-      if (!response.ok)
-        console.log("ERRO");
-
+      if (!response.ok) console.log("ERRO");
       return response.text();
     })
     .then((result) => {
@@ -114,16 +102,18 @@ async function getInfluxData(myquery,input_sid) {
       my_plant_key = plant_key;
 
       //invia il valore alla ripporto.html
-      document.getElementById("media").innerHTML = calcmedia(my_value).toFixed(2);
+      document.getElementById("media").innerHTML =
+        calcmedia(my_value).toFixed(2);
 
       const options = { year: "numeric", month: "long", day: "numeric" };
-      start = new Date(start).toLocaleDateString("it", options);
-      end = new Date(end).toLocaleDateString("it", options);
+      start = new Date(start.substring).toLocaleDateString("it", options);
+      end = new Date(end.substring).toLocaleDateString("it", options);
 
-      document.getElementById("data-cercata").innerHTML = start + " e il " + end;
+      document.getElementById("data-cercata").innerHTML =
+        start + " e il " + end;
 
       //data
-      dummyChart(calcmedia(my_value), my_titolo, my_value, my_time);
+      dummyChart(calcmedia(my_value), input_sid, my_value, my_time);
       Chart.pluginService.register(horizontalLinePlugin);
     })
     .catch((e) => window.alert("ERROR: " + e));
@@ -161,7 +151,6 @@ function csvJSON(csv) {
     for (let j = 0; j < headers.length; j++) {
       obj[headers[j]] = currentline[j];
     }
-
     result.push(obj);
   }
 
@@ -170,38 +159,42 @@ function csvJSON(csv) {
 }
 
 async function dummyChart(avg, titolo, value, time) {
+  mydata = {
+    labels: time,
+    datasets: [
+      {
+        label: titolo,
+        data: value,
+        backgroundColor: colorArray[searchColor(titolo)],
+        borderColor: colorArray[searchColor(titolo)],
+        pointRadius: 0,
+      },
+    ],
+  };
+
+  myoptions = {
+    elements: {
+      line: {
+        tension: 0,
+        fill: false,
+        borderWidth: 1.5,
+      },
+    },
+    horizontalLine: [
+      {
+        y: avg,
+        style: "rgba(60, 179, 113, 0.5)",
+      },
+    ],
+  };
+
   const ctx = document.getElementById(titolo);
-  ctx.style.backgroundColor = "rgba(53, 54, 54)";
+  ctx.style.backgroundColor = "#fff";
 
   const myChart = new Chart(ctx, {
     type: "line",
-    data: {
-      labels: time,
-      datasets: [
-        {
-          label: titolo,
-          data: value,
-          backgroundColor: colorArray[searchColor(titolo)],
-          borderColor: colorArray[searchColor(titolo)],
-          pointRadius: 0,
-        },
-      ],
-    },
-    options: {
-      elements: {
-        line: {
-          tension: 0,
-          fill: false,
-          borderWidth: 1.5,
-        },
-      },
-      horizontalLine: [
-        {
-          y: avg,
-          style: "rgba(60, 179, 113, 0.5)",
-        },
-      ],
-    },
+    data: mydata,
+    options: myoptions,
   });
 }
 
