@@ -5,80 +5,126 @@ let my_value = [];
 let my_plant_key = [];
 let my_sid = [];
 
-async function getInfluxData() {
-  const input_tabella = document.querySelector("#tabella").value;
-  const input_range = document.querySelector("#range span").outerText;
+const sid = ["bagno", "commerciale", "direzione", "uff_tecnico"];
+const measure = ["co2", "humidity", "temperature", "power"];
 
-  let start = input_range.substr(0,10) + 'T00:00:00Z';
-  let end = input_range.substr(13,23) + 'T00:00:00Z';
+var start = "";
+var end = "";
 
-  const input_measu = document.querySelector("#measure").value;
+async function caricaGrafico() {
+  const input_sid = measure[0] + "_" + sid[0];
+
+  const input_range = localStorage.reservationtime;
+
+  start = `${input_range.substr(6, 4)}-${input_range.substr(3,2)}-${input_range.substr(0, 2)}T00:00:00Z`; //
+  end = `${input_range.substr(25, 4)}-${input_range.substr(22,2)}-${input_range.substr(19, 2)}T00:00:00Z`; //
+
+  const query = [
+    `from(bucket: "${localStorage.plant}")
+         |> range(start: ${start}, stop: ${end})
+         |> filter(fn: (r) => r._measurement == "${measure[0]}")
+         |> filter(fn: (r) => r.sid == "${input_sid}")
+         |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
+        ];
+
+  getInfluxData(query[0],input_sid);
+  //getInfluxData(0);
+
+  /*
+  const myPromise = new Promise((resolve, reject)=>{
+
+    setTimeout(() => {
+      for (let i = 0; i < sid.length; i++) {
+        //getInfluxData(1);
+        resolve(getInfluxData(i));
+      }
+    }, 2000);
+
+  });
+*/
+}
+
+async function getInfluxData(myquery,input_sid) {
+//async function getInfluxData(value) {
+  /*
+  const input_plant = localStorage.plant;
+  const input_range = localStorage.reservationtime;
+  const input_select_timeframe = localStorage.timeframe;
+  
+  //  let start = input_range.substr(6, 4) + "-" + input_range.substr(3, 2) + "-" + input_range.substr(0, 2) + "T00:00:00Z";
+  //  let end = input_range.substr(25, 4) + "-" + input_range.substr(22, 2) + "-" + input_range.substr(19, 2) + "T00:00:00Z";
+  //20/06/2022 12:17 - 21/06/2022 12:17
+  
+  const input_range = localStorage.reservationtime;
+  
+  const input_measu = measure[value]; //document.querySelector("#measure").value;
   const x = input_measu == "temperature" ? 4 : 3;
-  const input_sid = input_measu.substr(0, x) + "_" + document.querySelector("#sid").value;
+  const input_sid = input_measu.substr(0, x) + "_" + sid[value]; //document.querySelector("#sid").value;
+
+  //${input_range.substr(11, 5)}
+  //${input_range.substr(30, 5)}
+
+  let start = `${input_range.substr(6, 4)}-${input_range.substr(3,2)}-${input_range.substr(0, 2)}T00:00:00Z`;
+  let end = `${input_range.substr(25, 4)}-${input_range.substr(22,2)}-${input_range.substr(19, 2)}T00:00:00Z`;
+
+  const query = [
+    `from(bucket: "${localStorage.plant}")
+    |> range(start: ${start}, stop: ${end})
+    |> filter(fn: (r) => r._measurement == "${measure[value]}")
+    |> filter(fn: (r) => r.sid == "${input_sid}")
+    |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
+  ];
+  */
+  
   const apiurl = "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
   const auth = "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
 
-  let query = `from(bucket: "${input_tabella}")
-             |> range(start: ${start}, stop: ${end})`;
+  my_titolo = input_sid;
 
-  if (input_measu == "power") {
-    query = query + `|> filter(fn: (r) => r._measurement == "${input_measu}")`;
-    my_titolo = input_measu;
-  } else {
-    my_titolo = input_sid;
-    query = query + `|> filter(fn: (r) => r._measurement == "${input_measu}")`;
-    query = query + `|> filter(fn: (r) => r.sid == "${input_sid}")`;
-  }
-  query = query + `|> aggregateWindow(every: 1h, fn: mean, createEmpty: true)`; 
-
-  fetch(apiurl, {
+  await fetch(apiurl, {
     method: "POST",
     headers: {
       Authorization: auth,
       "content-type": "application/vnd.flux",
     },
-    body: query,
+    body: myquery,
   })
     .then((response) => {
-      //tratare errore di conessione
-      if (!response.ok) {
-        throw new RequestException("Erro di request");
-      }
+      if (!response.ok)
+        console.log("ERRO");
+
       return response.text();
     })
     .then((result) => {
       const csv = result;
       const myJson = JSON.parse(csvJSON(csv));
 
-      if (myJson.length > 0) {
-        const _measurement = myJson.map((x) => x._measurement);
-        const _time = myJson.map((x) => x._time);
-        const _value = myJson.map((x) => x._value);
-        const plant_key = myJson.map((x) => x.plant_key);
-        const sid = myJson.map((x) => x.sid);
+      const _measurement = myJson.map((x) => x._measurement);
+      const _time = myJson.map((x) => x._time);
+      const _value = myJson.map((x) => x._value);
+      const plant_key = myJson.map((x) => x.plant_key);
+      //const sid = myJson.map((x) => x.sid);
 
-        my_sid = sid;
-        my_measurement = _measurement;
-        //my_time = getOre(_time);
-        my_time = _time;
-        my_giorno = _time[0].substr(0, 10);
-        my_value = _value;
-        my_plant_key = plant_key;
+      //my_sid = sid;
+      my_measurement = _measurement;
+      my_time = getOre(_time);
+      //my_time = _time;
+      my_giorno = _time[0].substr(0, 10);
+      my_value = _value;
+      my_plant_key = plant_key;
 
-        document.getElementById("media").innerHTML =
-          calcmedia(_value).toFixed(2);
-        //document.getElementById("titolo-graf").innerHTML = 'InfluxDB - ' + my_giorno;
+      //invia il valore alla ripporto.html
+      document.getElementById("media").innerHTML = calcmedia(my_value).toFixed(2);
 
-        dummyChart(calcmedia(_value), my_titolo, my_value, my_time);
-        dummyChart(calcmedia(_value), my_titolo, my_value, my_time);
-        
-        Chart.pluginService.register(horizonalLinePlugin);
-      }
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      start = new Date(start).toLocaleDateString("it", options);
+      end = new Date(end).toLocaleDateString("it", options);
 
-      if (myJson.length == 0) {
-          dummyChart(null,"no results",null,null);
-      }
+      document.getElementById("data-cercata").innerHTML = start + " e il " + end;
 
+      //data
+      dummyChart(calcmedia(my_value), my_titolo, my_value, my_time);
+      Chart.pluginService.register(horizontalLinePlugin);
     })
     .catch((e) => window.alert("ERROR: " + e));
 }
@@ -86,7 +132,7 @@ async function getInfluxData() {
 function getOre(value) {
   const element = [];
   for (let i = 0; i < value.length; i++) {
-    element[i] = value[i].substr(11, 2) + ':00';
+    element[i] = value[i].substr(11, 2) + ":00";
     i++;
   }
   return element;
@@ -124,9 +170,8 @@ function csvJSON(csv) {
 }
 
 async function dummyChart(avg, titolo, value, time) {
-  const ctx = document.getElementById("myChart");
+  const ctx = document.getElementById(titolo);
   ctx.style.backgroundColor = "rgba(53, 54, 54)";
-
 
   const myChart = new Chart(ctx, {
     type: "line",
@@ -150,7 +195,6 @@ async function dummyChart(avg, titolo, value, time) {
           borderWidth: 1.5,
         },
       },
-
       horizontalLine: [
         {
           y: avg,
@@ -190,7 +234,7 @@ let colorArray = [
   "rgb(0, 160, 239)",
 ];
 
-let horizonalLinePlugin = {
+let horizontalLinePlugin = {
   afterDraw: function (chartInstance) {
     let yScale = chartInstance.scales["y-axis-0"];
     let canvas = chartInstance.chart;
@@ -229,5 +273,3 @@ let horizonalLinePlugin = {
     }
   },
 };
-
-

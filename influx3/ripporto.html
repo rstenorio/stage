@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Influx</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="./js/service/influxdb-service.js"></script>
+  </head>
+  <body onload="caricaGrafico()">
+    <nav class="navbar">
+      <img src="img/navbar.PNG" alt="" srcset="" />
+    </nav>
+
+    <form class="form-container">
+      <div class="testo-rapporto">
+        <h1>
+          RAPPORTO DI INTERVENTO TECNICO <br />
+          SCUOLA ELEMENTARE DI STRAMBINO <br />
+          “Gen. C.A. Dalla Chiesa”
+        </h1>
+      </div>
+
+      <div class="img-scuola">
+        <img src="img/scuola.JPG" />
+      </div>
+
+      <div class="titolo">
+        <p>Introduzione</p>
+      </div>
+
+      <div class="paragrafo">
+        <p class="testo-justificato">
+          A seguito dei primi monitoraggi ambientali da Noi effettuati durante
+          il mese di marzo e aprile 2022, è stato redatto il presente rapporto
+          tecnico per evidenziare le criticità rilevate sull’edificio in esame,
+          ovvero la scuola elementare di Strambino “Gen. C.A. Dalla Chiesa”,
+          facente parte dellIstituto comprensivo statale di Strambino.
+        </p>
+      </div>
+
+      <div class="titolo">
+        <p>I monitoraggi effettuati</p>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Attualmente, tramite il sistema di domotica installato allinterno del
+          plesso, è possibile avere un monitoraggio per i seguenti valori:
+        </p>
+      </div>
+
+      <div class="list-1">
+        <ul>
+          - Accensione delle luci ambientali
+          <br />
+          - Temperatura dei locali (indicato in °C)
+          <br />
+          - Umidità dei locali (indicato in %)
+          <br />
+          - Livello di CO2 presente nei locali (indicato in ppm)
+          <br />
+          - Tempo di attivazione dei sistemi automatici di ricircolo dell’aria
+          dei locali
+          <br />
+          - Tempo di attivazione dei sistemi di riscaldamento dei locali
+          (termoconvettori)
+          <br />
+          - Tempo di attivazione e di superamento soglia dei livelli di CO2
+          impostati
+          <br />
+          - Tempo di accensione dei Boiler per il riscaldamento dell’acqua
+          sanitaria
+          <br />
+        </ul>
+      </div>
+
+      <div>
+        <p style="text-align: left; color: green; font-weight: 700">
+          <i>
+            I valori rilevati sono legati alla presenza dei sensori nelle aule;
+            pertanto, si <br />
+            invita a visionare la Vostra offerta per verificare l’elenco
+            completo dei <br />
+            dispositivi installati.
+          </i>
+        </p>
+        <hr />
+      </div>
+
+      <div class="titolo">
+        <p>Lo stato di funzionamento e le anomalie riscontrate</p>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Durante il periodo preso in esame, compreso tra i giorni del
+          <b id="data-cercata"></b>, è possibile notare che i sistemi di
+          sorveglianza per i livelli di CO2 e le automazioni create stanno
+          funzionando a dovere, in quando è possibile vedere all’interno dei
+          grafici presenti nell’interfaccia di Home Assistant, come i livelli di
+          CO2 vengano mantenuti bassi dal sistema di automazione per l’apertura
+          e la chiusura dei serramenti da Noi installato.
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="co2_bagno"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Nell’immagine inserita in alto è possibile vedere come il livello di
+          CO2 sia stato mantenuto a un
+          <b>livello medio di <tag id="media"></tag> ppm </b>(parti per
+          milione), di molto inferiore ai 2000 ppm imposti come limite oltre il
+          quale le capacità di apprendimento iniziano a degradare. <br />
+          <b>
+            NOTA: I dati inseriti sono riferiti all’aula tre dell’istituto in
+            esame
+          </b>
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="co2_commerciale"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Nel dettaglio è possibile vedere i parametri di attivazione per i
+          giorni dal <b id="data-cercata">...</b>. Si può notare come i livelli
+          siano saliti fino all’attivazione del sistema automatico e abbiano
+          attivato il sistema correttamente, come impostato dagli utenti.
+          L’apertura automatica dei serramenti è evidenziata in azzurro sul
+          grafico.
+        </p>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          <b>
+            NOTA: Per monitorare lo stato attuale e giornaliero del livello di
+            co2 è sempre possibile utilizzare l’interfaccia di Home Assistant,
+            che fornisce un grafico di attivazione per le precedenti 24 ore.
+          </b>
+          <br /><br />
+          Per quanto riguarda invece lo stato della gestione del riscaldamento,
+          abbiamo rilevato una serie di anomalie date dalla gestione manuale
+          della temperatura della caldaia installata nella struttura.
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="co2_direzione"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Come si può vedere nel grafico giornaliero, il periodo di attivazione
+          del sistema dei termostati che regola la temperatura ambientale si è
+          attivato solamente due volte nell’arco del periodo indicato, e sempre
+          per via dell’apertura delle finestre in modo da mantenere il confort
+          termico per gli alunni. <br /><br />
+          Da questo si può evincere che il sistema automatico non riesce a
+          raggiungere la temperatura minima di attivazione, e le stanze vengono
+          scaldate dal semplice passaggio di acqua calda generato dai tubi
+          passanti all’interno del sistema di riscaldamento. <br /><br />
+          La stessa situazione si può verificare durante tutto il periodo in
+          esame
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="co2_uff_tecnico"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Dal grafico è possibile notare come il sistema automatico non si sia
+          mai attivato se non per un effetto di compensazione dovuto
+          all’apertura automatica delle finestre, e anche in quel caso con un
+          periodo di attivazione minimo. Nella parte finale del grafico possiamo
+          vedere come il valore della temperatura sia calato bruscamente, a
+          causa dello spegnimento della caldaia nel fine settimana. <br /><br />
+          La zona rossa indica che è
+          <b>stato mantenuto acceso il sistema di riscaldamento; </b>
+          pertanto, i termoconvettori hanno girato a vuoto, cercando di
+          compensare per l’abbassamento della temperatura. Per evitare ciò è
+          necessario che venga comunicato a chi di competenza l’accensione e lo
+          spegnimento della caldaia, in modo da settare in modo corretto anche
+          il sistema presente su Home Assistant, questo per evitare inutili
+          sprechi e ridurre al minimo il consumo.
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="myChart"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          Andando a eliminare la parte in cui si è verificato che la caldaia era
+          spenta, si può notare come il <b>tempo di accensione</b> totale del
+          sistema sia <b>inferiore alle 20 ore mensili</b>, verificando quindi
+          la nostra tesi della temperatura troppo alta di funzionamento della
+          caldaia. <br /><br />
+          Come ulteriore prova di ciò si può evidenziare come non siano presenti
+          zone evidenziate in rosso nell’arco delle settimane.
+          <br /><br />
+          In un ciclo di funzionamento ottimale, invece, il grafico al posto di
+          presentare i picchi di temperatura in prossimità delle ore più calde,
+          dovrebbe rappresentare un diagramma molto più lineare, fatto da
+          periodi di attivazione intervallati a periodi di spegnimento, in base
+          ai parametri impostati dagli utenti, come nella foto indicata nella
+          pagina successiva
+        </p>
+      </div>
+
+      <div class="card chart-container">
+        <!--<h2 id="titolo-graf">Influx Grafici</h2>-->
+        <!--<canvas id="myChart"></canvas>-->
+        <canvas
+          id="myChart"
+          width="820px"
+          height="300"
+          style="background-color: grey"
+        ></canvas>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          <b
+            >Esempio di funzionamento regolare dell’impianto di riscaldamento.
+          </b>
+          <br /><br />
+          In futuro, appena i dati diventeranno sostanziali e si avrà almeno un
+          ciclo di riscaldamento completo per una stagione, sarà possibile anche
+          evidenziare il potenziale di isolamento della struttura.
+          <br /><br />
+          È possibile, infatti, misurare il grado di isolamento andando a
+          visualizzare in quanto tempo il potenziale termico viene ceduto verso
+          l’esterno dalla struttura, misurando la differenza di tempo tra i
+          cicli di attivazione dei termoconvettori.
+        </p>
+      </div>
+
+      <div class="titolo">
+        <p>Suggerimenti e azioni correttive</p>
+      </div>
+
+      <div class="paragrafo">
+        <p>
+          In base a quanto espresso sopra, quindi, possiamo notare come
+          <b
+            >il sistema di gestione della CO2 sta funzionando perfettamente,
+          </b>
+          e non sono necessarie azioni correttive. <br /><br />
+
+          Per quanto riguarda invece il sistema diriscaldamento,
+          <b
+            >sarebbe opportuno abbassare la temperatura di esercizio della
+            caldaia di qualche grado,</b
+          >
+          permettendo al sistema automatico di intervenire sulla gestione del
+          termostato. <br /><br />
+
+          Una volta effettuata questa modifica, il sistema diventerà gestibile
+          in modo autonomo tramite la Vostra installazione di Home Assistant,
+          andando a garantire il massimo confort abitativo e garantendo il
+          massimo risparmio possibile
+        </p>
+      </div>
+    </form>
+
+    <footer class="footer bg-light text-center text-lg-start">
+      <div class="text-center p-3">
+        <a class="text-light" href="www.canavisia.com">
+          <img src="img/footer.PNG" alt="" srcset="" />
+        </a>
+      </div>
+    </footer>
+
+    <script
+      type="text/javascript"
+      src="https://npmcdn.com/chart.js@2.4.0/dist/Chart.bundle.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <!--script src="./js/service/influxdb-service.js"></script
+
+    
+    <script type="text/javascript">
+      $(function () {
+        var start = moment().subtract(30, "days");
+        var end = moment();
+
+        function cb(start, end) {
+          $("#range span").html(
+            start.format("YYYY-MM-DD") + " - " + end.format("YYYY-MM-DD")
+          );
+        }
+
+        $("#range").daterangepicker(
+          {
+            startDate: start,
+            endDate: end,
+            ranges: {
+              "1 Giorno": [moment().subtract(1, "days")],
+              "1 Settimana": [moment().subtract(7, "days"), moment()],
+              "1 Mese": [moment().subtract(30, "days"), moment()],
+            },
+          },
+          cb
+        );
+
+        cb(start, end);
+      });
+    </script>
+    -->
+  </body>
+</html>

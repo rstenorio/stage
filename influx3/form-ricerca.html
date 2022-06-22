@@ -11,9 +11,23 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"
+      integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg=="
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
     />
 
     <script
@@ -43,21 +57,13 @@
       integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA=="
       crossorigin="anonymous"
     ></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"
-      integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg=="
-      crossorigin="anonymous"
-    />
+
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
     ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
-    />
+
+    <link rel="stylesheet" href="css/form-ricerca.css" />
 
     <title>Poste 1</title>
   </head>
@@ -67,12 +73,14 @@
         <div class="content-header">
           <div class="container-fluid">
             <div class="row mb-2">
+              <!--mb margin bottom-->
               <div class="col-sm-6">
-                <h1 class="m-0">Download data</h1>
+                <h1 class="m-0">Ricerca Dati</h1>
               </div>
             </div>
           </div>
         </div>
+
         <div class="content">
           <div class="container-fluid">
             <div class="row">
@@ -82,96 +90,50 @@
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group">
-                          
                           <label>Date and time range:</label>
-                          
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text"
                                 ><i class="far fa-clock"></i
                               ></span>
                             </div>
+
                             <input
                               type="text"
                               class="form-control float-right"
                               id="reservationtime"
                             />
                           </div>
-                          
                         </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col-sm-12"></div>
                     </div>
+
                     <div class="form-group">
                       <label>Plant</label
                       ><select id="select_plant" class="form-control">
-                        <option value="U3QSV4iSps5kwU6T6S5HDl0kq3Ze2IpG">
-                          Bologna CMP
-                        </option>
-                        <option value="W3MSV5eTkr8duX6R6V3BFh3ih4Ya5FqM">
-                          Bologna Direzionale
-                        </option>
-                        <option
-                          value="S1MUV5iSbs8jtU5S6S5BJl2jr4Ye5DpK-V3TXQ4lSau8guW5R9W6EKl0in1Vg5DpL"
-                        >
-                          Sesto Fiorentino
-                        </option>
-                        <option
-                          value="S3MYW3jVoq6dpY6U6S6PEh2kk3Ug2DpL-S3MTW5hXjp8ipW6S6U3GFl3ni4Wb4FqC"
-                        >
-                          Napoli
-                        </option>
-                        <option value="S3MYU4gUfu5epZ7U7Q5JKh3nr2Ye5JpC">
-                          Fiumicino 2
-                        </option>
-                        <option value="S3NUQ3kSdt5iwS5T9W3DFh1mj3Za4EqK">
-                          Modena
-                        </option>
-                        <option value="T3OUV3lUds8gtS5Y6T6CKl3jr3Ug4GpB">
-                          Brescia
-                        </option>
-                        <option
-                          value="U1QUU3jTlu8kvX5Y7Q6HJh1hi2Vg5JpM-U1RVQ4gTfu8ftT4T9X6LIl2in1Ug4HpF"
-                        >
-                          Modugno
-                        </option>
-                        <option value="U1RTS4eUgp6hvY7S8X3DEl1hh2Xb4EpL">
-                          Palermo
-                        </option>
-                        <option value="U2QUU2iXgt6hwY7W7W4FIl3ln3Uc4FpN">
-                          Parma
-                        </option>
-                        <option value="U3QYU4hTat5jvW6W7X3EEh2jc3Wb2EpN">
-                          Lamezia Terme
-                        </option>
-                        <option value="V3SYW2lTbp7hwY4S6U4IHh2jh2Sd5DpG">
-                          Melzo
-                        </option>
-                        <option value="W2MVW3jWfq5dtY5X6X6PEh2hn1Sh5JpP">
-                          Genova CMP
-                        </option>
-                        <option value="Y1RXR4gQbr6ktX7W8Q4JIl0jq4Td3JqN">
-                          Pomezia
-                        </option>
-                        <option
-                          value="Z1SUW2lUcp5jsT4R6S4MJl1lq4Vc3KqJ-W3MRV3lXir5iqU5V6V4KGl2mh3Uc5EqG"
-                        >
-                          Torino
-                        </option>
+                        <option value="log">log</option>
+                        <option value="poste0">poste0</option>
+                        <option value="poste1">poste1</option>
                       </select>
                     </div>
+
                     <div class="form-group">
                       <label>Timeframe</label
                       ><select id="select_timeframe" class="form-control">
-                        <option value="0">Hourly</option>
-                        <option value="1">Every 15 minutes</option>
+                        <option value="30m">Ogni 30 minuti</option>
+                        <option value="1h">Ogni 1 ora</option>
+                        <option value="2h">Ogni 2 ore</option>
+                        <option value="3h">Ogni 3 ore</option>
                       </select>
                     </div>
-                    <a href="#" class="btn btn-primary" onclick="downloadData()"
-                      >Download data</a
-                    >
+                    <button class="btn btn-primary" type="button">
+                      Carica Ripporto
+                    </button>
+                    <!--parent.location='ripporto.html'-->
                   </div>
                 </div>
               </div>
@@ -179,6 +141,7 @@
           </div>
         </div>
       </div>
+
       <footer class="main-footer">
         <strong
           >Copyright &copy; 2022
@@ -187,8 +150,35 @@
       </footer>
       <div id="sidebar-overlay"></div>
     </div>
-   
-   <script>
+
+    <script>
+      /*
+        function updateHTML(elmId, value) {
+        var elem = document.getElementById(elmId);
+        if (typeof elem !== "undefined" && elem !== null) {
+          elem.innerHTML = value;
+        }
+      }
+      */
+
+      $(document).ready(function () {
+        $("button").click(function () {
+          //$("p").text("Hello World!");
+
+          var reservationtime = document.getElementById("reservationtime").value;
+          var timeframe = document.getElementById("select_timeframe").value;
+          var plant = document.getElementById("select_plant").value;
+
+          localStorage.setItem("reservationtime", reservationtime);
+          localStorage.setItem("timeframe", timeframe);
+          localStorage.setItem("plant", plant);
+
+          window.parent.location = "ripporto.html";
+        });
+      });
+    </script>
+
+    <script>
       var endDate = (new Date().getTime() / 1000).toFixed(0);
       var startDate = endDate - 60 * 60 * 24;
       $(function () {
@@ -199,10 +189,9 @@
           timePickerIncrement: 60,
           timePicker24Hour: true,
           ranges: {
-            "Last 24h": [moment().subtract(1, "days"), moment()],
-            "Last 7 days": [moment().subtract(1, "week"), moment()],
-            "Last Month": [moment().subtract(1, "month"), moment()],
-            "Last Year": [moment().subtract(1, "year"), moment()],
+            "1 Giorno": [moment().subtract(1, "days")],
+            "1 Settimana": [moment().subtract(7, "days"), moment()],
+            "1 Mese": [moment().subtract(30, "days"), moment()],
           },
           locale: {
             format: "DD/MM/YYYY HH:mm",
@@ -220,6 +209,7 @@
         );
       });
 
+      /*
       function downloadData() {
         var st = document.getElementById("select_timeframe");
         var apikey = document.getElementById("select_plant").value;
@@ -250,6 +240,7 @@
             endDate;
         }
       }
+      */
     </script>
   </body>
 </html>
