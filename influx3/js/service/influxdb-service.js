@@ -16,7 +16,7 @@ async function caricaGrafico() {
   const sid = ["bagno", "commerciale", "direzione", "uff_tecnico"];
 
   for (let i = 0; i < sid.length; i++) {
-    const input_sid = measure[0].substring(0, 3) + "_" + sid[i];
+    const input_sid = `${measure[0].substring(0, 3)}_${sid[i]}`;
 
     const query = [
       `from(bucket: "${localStorage.plant}")
@@ -28,48 +28,25 @@ async function caricaGrafico() {
       `from(bucket: "${localStorage.plant}")
       |> range(start: ${start}, stop: ${end})
       |> filter(fn: (r) => r._measurement == "${measure[0]}")
-      |> filter(fn: (r) => r["sid"] == "co2_bagno" or r["sid"] == "co2_commerciale")
+      |> filter(fn: (r) => r.sid == "co2_bagno" or r.sid == "co2_commerciale")
       |> filter(fn: (r) => r.sid == "${input_sid}")
       |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
     ];
     getInfluxData(query[0], input_sid);
   }
-
-  //getInfluxData(0);
-
-  /*
-  const myPromise = new Promise((resolve, reject)=>{
-
-    setTimeout(() => {
-      for (let i = 0; i < sid.length; i++) {
-        //getInfluxData(1);
-        resolve(getInfluxData(i));
-      }
-    }, 2000);
-
-  });
-*/
 }
 
 const sistData = (value) => {
   //21/06/2022 10:23 - 22/06/2022 10:23
-  const start = `${value.substr(6, 4)}-${value.substr(3, 2)}-${value.substr(
-    0,
-    2
-  )}T${value.substr(11, 5)}:00Z`;
-  const end = `${value.substr(25, 4)}-${value.substr(22, 2)}-${value.substr(
-    19,
-    2
-  )}T${value.substr(30, 5)}:00Z`;
+  const start = `${value.substr(6, 4)}-${value.substr(3, 2)}-${value.substr(0,2)}T${value.substr(11, 5)}:00Z`;
+  const end = `${value.substr(25, 4)}-${value.substr(22, 2)}-${value.substr(19,2)}T${value.substr(30, 5)}:00Z`;
 
   return { start, end };
 };
 
 async function getInfluxData(myquery, input_sid) {
-  const apiurl =
-    "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
-  const auth =
-    "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
+  const apiurl = "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
+  const auth = "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
 
   await fetch(apiurl, {
     method: "POST",
@@ -87,13 +64,13 @@ async function getInfluxData(myquery, input_sid) {
       const csv = result;
       const myJson = JSON.parse(csvJSON(csv));
 
-      const _measurement = myJson.map((x) => x._measurement);
-      const _time = myJson.map((x) => x._time);
-      const _value = myJson.map((x) => x._value);
-      const plant_key = myJson.map((x) => x.plant_key);
-      //const sid = myJson.map((x) => x.sid);
+      const _measurement = myJson.map((x) => x._measurement); //co2
+      const _time = myJson.map((x) => x._time); //2022-06-21T11:00:00.000Z
+      const _value = myJson.map((x) => x._value); //759.76
+      const plant_key = myJson.map((x) => x.plant_key); //demo_hass
+      const sid = myJson.map((x) => x.sid); //co2_commerciale/co2_bagno
 
-      //my_sid = sid;
+      my_sid = sid;
       my_measurement = _measurement;
       my_time = getOre(_time);
       //my_time = _time;
@@ -102,15 +79,21 @@ async function getInfluxData(myquery, input_sid) {
       my_plant_key = plant_key;
 
       //invia il valore alla ripporto.html
-      document.getElementById("media").innerHTML =
-        calcmedia(my_value).toFixed(2);
+      document.getElementById("media").innerHTML = calcmedia(my_value).toFixed(2);
 
       const options = { year: "numeric", month: "long", day: "numeric" };
       start = new Date(start.substring).toLocaleDateString("it", options);
       end = new Date(end.substring).toLocaleDateString("it", options);
 
-      document.getElementById("data-cercata").innerHTML =
-        start + " e il " + end;
+      document.getElementById("data-cercata").innerHTML = start + " e il " + end;
+        
+      
+      for (let i = 0; i < sid.length; i++) {
+        const sidLoop = sid[i]
+        do {
+          
+        }while(sid[i] == "")
+      }
 
       //data
       dummyChart(calcmedia(my_value), input_sid, my_value, my_time);
@@ -183,7 +166,7 @@ async function dummyChart(avg, titolo, value, time) {
     horizontalLine: [
       {
         y: avg,
-        style: "rgba(60, 179, 113, 0.5)",
+        style: "rgba(60, 79, 113, 0.5)",
       },
     ],
   };
