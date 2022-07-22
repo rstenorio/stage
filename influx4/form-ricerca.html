@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="generator"
+      content="HTML Tidy for HTML5 for Apple macOS version 5.8.0"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+      integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+
+    <link rel="stylesheet" href="css/form-ricerca.css" />
+
+    <title>Ricerca - Canavisia</title>
+  </head>
+  <body class="sidebar-collapse">
+    <div class="wrapper">
+      <div class="content-wrapper" style="min-height: 244.75px">
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <!--mb margin bottom-->
+              <div class="col-sm-6">
+                <h1 class="m-0">Ricerca Dati</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label>Date and time range:</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"
+                                ><i class="far fa-clock"></i
+                              ></span>
+                            </div>
+
+                            <input
+                              type="text"
+                              class="form-control float-right"
+                              id="reservationtime"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Timeframe</label>
+                      <select id="select_timeframe" class="form-control">
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Plant</label>
+                      <select id="select_plant" class="form-control">
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Misura</label>
+                      <select id="select_misura" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Influx Token</label>
+                      <input
+                        id="token"
+                        type="text"
+                        class="form-control"
+                        placeholder="Inserire il token generato su influxdb-iot"
+                        value="Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw=="
+                      />
+                      
+                      <div class="error-message" data-error="token"></div>
+
+                      <a href="https://influxdb-iot.canavisia.duckdns.org/"
+                        target="_blank">
+                        link token
+                      </a>
+                    </div>
+
+                    <button class="btn btn-primary" type="button">
+                      Carica Ripporto
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2022
+          <a href="https://canavisia.com" target="_blank">Canavisia.</a></strong
+        > All rights reserved.
+      </footer>
+      <div id="sidebar-overlay"></div>
+    </div>
+
+    <script>
+      let valori = "co2,humidity,temperature,power";
+      let options = valori.split(",");
+      let select = document.getElementById("select_misura");
+      for (let i = 0; i < options.length; i++) {
+        select.options[i] = new Option(options[i], options[i]); //new Option("Text", "Value")
+      }
+
+      valori = "log,poste0,poste1";
+      options = valori.split(",");
+      select = document.getElementById("select_plant");
+      for (var i = 0; i < options.length; i++) {
+        select.options[i] = new Option(options[i], options[i]); //new Option("Text", "Value")
+      }
+ 
+      valori = "30m,1h,2h,3h";
+      options = valori.split(",");
+      select = document.getElementById("select_timeframe");
+      for (var i = 0; i < options.length; i++) {
+        select.options[i] = new Option(options[i], options[i]); //new Option("Text", "Value")
+      }
+
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $("button").click(function () {
+          var reservationtime = document.getElementById("reservationtime").value;
+          var timeframe = document.getElementById("select_timeframe").value;
+          var plant = document.getElementById("select_plant").value;
+          var token = document.getElementById("token").value;
+
+          localStorage.setItem("reservationtime", reservationtime);
+          localStorage.setItem("timeframe", timeframe);
+          localStorage.setItem("plant", plant);
+          localStorage.setItem("token", token);
+
+          window.parent.location = "ripporto.html";
+        });
+      });
+    </script>
+
+    <script>
+      var endDate = (new Date().getTime() / 1000).toFixed(0);
+      var startDate = endDate - 60 * 60 * 24;
+      $(function () {
+        $("#reservationtime").daterangepicker({
+          startDate: new Date(startDate * 1000),
+          endDate: new Date(endDate * 1000),
+          timePicker: true,
+          timePickerIncrement: 60,
+          timePicker24Hour: true,
+          ranges: {
+            "1 Giorno": [moment().subtract(1, "days")],
+            "1 Settimana": [moment().subtract(7, "days"), moment()],
+            "1 Mese": [moment().subtract(30, "days"), moment()],
+          },
+          locale: {
+            format: "DD/MM/YYYY HH:mm",
+          },
+        });
+
+        $("#reservationtime").on(
+          "apply.daterangepicker",
+          function (ev, picker) {
+            sd = new Date(picker.startDate.format("YYYY-MM-DDTHH:mm:ss"));
+            ed = new Date(picker.endDate.format("YYYY-MM-DDTHH:mm:ss"));
+            startDate = (sd.getTime() / 1000).toFixed(0);
+            endDate = (ed.getTime() / 1000).toFixed(0);
+          }
+        );
+      });
+      
+    </script>
+  </body>
+</html>

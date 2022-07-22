@@ -1,0 +1,131 @@
+
+
+html{
+  background-color: rgb(245, 239, 239);
+}
+
+html,body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container h1{
+  font-size: 28px;
+  color: green;
+}
+
+
+.form-select {
+  margin: 5px;
+  width: 320px;
+  height: 35px;
+}
+
+.btn-container {
+  margin: 10px;
+  max-width: 240px;
+}
+
+.control-container{
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  width: 600px;
+}
+
+.btn {
+  width: 70px;
+  height: auto;
+}
+
+.range{
+  max-width: 95%;
+  background: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.testo-rapporto{
+  width: 800px;
+  text-align: center;
+}
+
+.titolo{
+  padding-bottom: 0;
+  color: green;
+  font-size: 32px;
+  width: 840px;
+}
+
+.img-scuola img{
+  border-radius: 8px;
+}
+
+.paragrafo p{
+  font-size: 20px;
+  font-weight: 100;
+  width: 840px;
+  text-align: justify;
+}
+
+.list-1{
+  text-align: left;
+  font-weight: 700;
+  font-size: 19px;
+  width: 840px;
+  padding: 10px;
+}
+
+/*
+border: 1px solid red;
+*/
+
+@media only screen and (max-width: 1056px) {
+
+  .navbar img {
+    max-width: 650px;
+    align-items: center;
+  }
+
+  .img-scuola img{
+    max-width: 720px;
+    align-items: center;
+  }
+
+  footer img {
+    max-width: 650px;
+    align-items: center;
+
+  }
+
+}
+
+@media only screen and (max-width: 900px) {
+  .paragrafo p{
+    max-width: 680px;
+    height: auto;
+    align-items: center;
+  }
+
+  .titolo {
+    max-width: 680px;
+  }
+
+  .list-1 {
+    width: 720px;
+  }
+
+  .chart-container{
+    width: 680px;
+  }
+
+}

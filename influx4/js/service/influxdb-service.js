@@ -1,3 +1,5 @@
+//import Measure from '../models/dbMeasure.js';
+
 let my_measurement = [];
 let my_time = [];
 let my_value = [];
@@ -20,8 +22,8 @@ async function caricaGrafico() {
   const measure = ["co2", "humidity", "temperature", "power"];
   const sid = ["bagno", "commerciale", "direzione", "uff_tecnico"];
 
-//  for (let i = 0; i < sid.length; i++) {
-    const input_sid = `${measure[0].substring(0, 3)}_${sid[0]}`; //co"_bagno
+  for (let i = 0; i < sid.length; i++) {
+    const input_sid = `${measure[0].substring(0, 3)}_${sid[i]}`; //co"_bagno
 
     const query = [
       `from(bucket: "${localStorage.plant}")
@@ -35,9 +37,13 @@ async function caricaGrafico() {
       |> filter(fn: (r) => r._measurement == "${measure[0]}")
       |> filter(fn: (r) => r.sid == "co2_bagno" or r.sid == "co2_commerciale")
       |> aggregateWindow(every: ${localStorage.timeframe}, fn: mean, createEmpty: true)`,
+
+
+
+
     ];
-    getInfluxData(query[1], input_sid);
-  //}
+    getInfluxData(query[0], input_sid);
+  }
 }
 
 const sistData = (value) => {
@@ -50,7 +56,9 @@ const sistData = (value) => {
 
 async function getInfluxData(myquery, input_sid) {
   const apiurl = "https://influxdb-iot.canavisia.duckdns.org/api/v2/query?org=canavisia";
-  const auth = "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
+  const auth = localStorage.token
+  
+  //const auth = "Token S9ZwQl05cEhfE4IRS0DYwacVGL-7KBvbWJ-hCZyXJrLruuPYIRqbHjhlli6nlU-KvxkfsknTkH8RokL9d6kHRw==";
 
   await fetch(apiurl, {
     method: "POST",
@@ -69,9 +77,9 @@ async function getInfluxData(myquery, input_sid) {
       const myJson = JSON.parse(csvJSON(csv));
 
       const _measurement = myJson.map((x) => x._measurement); //co2
-      const _time = myJson.map((x) => x._time); //2022-06-21T11:00:00.000Z
-      const _value = myJson.map((x) => x._value); //759.76
-      const plant_key = myJson.map((x) => x.plant_key); //demo_hass
+      const _time = myJson.map((x) => x._time);               //2022-06-21T11:00:00.000Z
+      const _value = myJson.map((x) => x._value);             //759.76
+      const plant_key = myJson.map((x) => x.plant_key);       //demo_hass
       const sid = myJson.map((x) => x.sid); //co2_commerciale/co2_bagno
 
       my_sid = sid;
@@ -119,7 +127,7 @@ function csvJSON(csv) {
   let lines = csv.toString().split("\r\n");
   let result = [];
   let headers = lines[0].split(",");
-
+  
   for (var i = 1; i < lines.length; i++) {
     if (!lines[i]) continue;
 
@@ -131,10 +139,11 @@ function csvJSON(csv) {
     }
     result.push(obj);
   }
-
+  
   //return result; //JavaScript object
   return JSON.stringify(result); //JSON
 }
+
 
 async function dummyChart(avg, titolo, value, time, my_sid) {
   let sidLoop = my_sid[0];

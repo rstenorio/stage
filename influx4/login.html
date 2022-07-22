@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="generator"
+      content="HTML Tidy for HTML5 for Linux version 5.7.45"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  
+  <body class="login-page" style="min-height: 466px" onload="init()">
+    <div class="login-box">
+      <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+          <p class="h1"><b>Seica</b>Canavisia</p>
+        </div>
+
+        <div class="card-body">
+          <p class="login-box-msg">Sign in to start your session</p>
+          
+          <form action="" method="post">
+            
+            <div class="input-group mb-3">
+              <input
+                class="form-control"
+                type="text"
+                name="username"
+                id="usr"
+                placeholder="Username"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text"></div>
+              </div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input
+                type="password"
+                name="password"
+                id="pwd"
+                class="form-control"
+                placeholder="Password"
+              />
+              <div class="input-group-append">
+                <div class="input-group-text"></div>
+              </div>
+            </div>
+
+            <div class="row btn-container">
+              <div class="col-6">
+                <!--<input id="btnLogin" name="btnLogin" type="button" class="btn btn-primary btn-block" value="Sign In">  onclick=login()>  "parent.location='form-ricerca.html'">-->
+                <button class="btn btn-primary btn-block" type="button">
+                  Sign In
+                </button>
+                
+                <a href="registrati.html">registrati</a>
+              </div>
+            </div>
+
+          </form>
+        
+        </div>
+      </div>
+    </div>
+    <script src="./js/service/login.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $("button").click(function () {
+
+          localStorage.setItem("usr", document.getElementById("usr").value);
+          localStorage.setItem("pwd", document.getElementById("pwd").value);
+          login();
+        });
+      });
+    </script>
+
+  </body>
+</html>
